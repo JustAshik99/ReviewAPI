@@ -1,0 +1,5 @@
+runtime: custom
+env: flex
+endpoints_api_service:
+    name: premium-bastion-304715.appspot.com
+    rollout_strategy: managed
