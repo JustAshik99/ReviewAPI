@@ -21,18 +21,18 @@ namespace Venue.Api.Authentication
             {
                 message = "Invalid Authentication"
             };
-            if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeaderName, out var potentialApiKey))
+            if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeaderName, out var potentialApiKey)) //issue reading api key
             {
                 context.Result = new JsonResult(error);
                 return;
             }
 
             var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            var IOSapikey = configuration.GetValue<string>("Apikey");
+            var IOSapikey = configuration.GetValue<string>("Apikey"); //get value of apikey from config
 
             if (checkIOS(IOSapikey, potentialApiKey))
             {
-                ios = true;
+                ios = true; 
             }
 
             if (ios == true)
@@ -41,14 +41,14 @@ namespace Venue.Api.Authentication
             }
             else
             {
-                context.Result = new JsonResult(error);
+                context.Result = new JsonResult(error); //incorrect api key
                 return;
             }
 
-            await next();
+            await next(); //continue
         }
 
-        public bool checkIOS(string potential, string key)
+        public bool checkIOS(string potential, string key) //checks if key is correct
         {
             if (key.Equals(potential))
             {
